@@ -60,9 +60,11 @@ def add_grade(student: list, journal: list, last_name: str, first_name: str, les
             if les:
                 les.get("grade").append(grade)
             else:
-                p = less.get("student")
-                p.append({"student_id": stud.get("id"), "grade": [grade]})
-                print(p)
+                less.get("student").append({"student_id": stud.get("id"), "grade": [grade]})
+        else:
+            print(f"Lesson {lesson} not found")
+    else:
+        print(f"Student {last_name} {first_name} not found")
 
 
 def find_grade_student(student: list, journal: list, last_name: str, first_name: str) -> tuple:
@@ -80,7 +82,9 @@ def find_grade_student(student: list, journal: list, last_name: str, first_name:
                 result[item[0]] = item[1].get("grade")
             else:
                 result[item[0]] = []
-    return last_name + " " + first_name, result
+    else:
+        return f'{last_name} {first_name} not found', None
+    return f'{last_name} {first_name}', result
 
 
 print(students)
@@ -108,5 +112,12 @@ print(f"student: {my_grade[0]}\ngrade: {my_grade[1]}")
 my_test = find_grade_student(student=students, journal=journals, last_name="Testing", first_name="Test")
 print(f"student: {my_test[0]}\ngrade: {my_test[1]}")
 add_grade(student=students, journal=journals, last_name="Testing", first_name="Test", lesson="math", grade=3)
+add_grade(student=students, journal=journals, last_name="Testing", first_name="Test", lesson="music", grade=5)
+add_grade(student=students, journal=journals, last_name="Testing", first_name="Test", lesson="math", grade=5)
+add_grade(student=students, journal=journals, last_name="Testing", first_name="Test", lesson="geography", grade=4)
 my_test = find_grade_student(student=students, journal=journals, last_name="Testing", first_name="Test")
 print(f"student: {my_test[0]}\ngrade: {my_test[1]}")
+
+t = find_grade_student(student=students, journal=journals, last_name="qwe", first_name="asd")
+
+print(f"student: {t[0]}\ngrade: {t[1]}")
