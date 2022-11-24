@@ -15,16 +15,16 @@ students = [
 journals = [
     {"lesson": "math",
      "student": [
-        {"student_id": "6fa0ba0f-bca6-41bb-ac3f-13de2a7bbf2f", "grade": [3, 4, 5, 2, 5, 4]},
-        {"student_id": "8f4cfe1f-1f78-4cdc-8cfd-a3406a990b3e", "grade": [2]},
-        {"student_id": "be087d42-da91-40b7-88dc-851078d568a0", "grade": [4, 4, 4, 5]},
-    ]},
+         {"student_id": "6fa0ba0f-bca6-41bb-ac3f-13de2a7bbf2f", "grade": [3, 4, 5, 2, 5, 4]},
+         {"student_id": "8f4cfe1f-1f78-4cdc-8cfd-a3406a990b3e", "grade": [2]},
+         {"student_id": "be087d42-da91-40b7-88dc-851078d568a0", "grade": [4, 4, 4, 5]},
+     ]},
     {"lesson": "geography",
      "student": [
-        {"student_id": "6fa0ba0f-bca6-41bb-ac3f-13de2a7bbf2f", "grade": [4, 5, 4]},
-        {"student_id": "8f4cfe1f-1f78-4cdc-8cfd-a3406a990b3e", "grade": [3]},
-        {"student_id": "be087d42-da91-40b7-88dc-851078d568a0", "grade": [5, 5]},
-    ]}
+         {"student_id": "6fa0ba0f-bca6-41bb-ac3f-13de2a7bbf2f", "grade": [4, 5, 4]},
+         {"student_id": "8f4cfe1f-1f78-4cdc-8cfd-a3406a990b3e", "grade": [3]},
+         {"student_id": "be087d42-da91-40b7-88dc-851078d568a0", "grade": [5, 5]},
+     ]}
 ]
 
 
@@ -41,9 +41,9 @@ def add_student(student: list, last_name: str, first_name: str, klass: str) -> N
 
 def find_student(student: list, last_name: str, first_name: str) -> dict:
     stud = next((stud
-                for stud in student
-                if stud.get("last_name") == last_name
-                and stud.get("first_name") == first_name), None)
+                 for stud in student
+                 if stud.get("last_name") == last_name
+                 and stud.get("first_name") == first_name), None)
     return stud
 
 
@@ -54,8 +54,15 @@ def add_grade(student: list, journal: list, last_name: str, first_name: str, les
                      for less in journal
                      if less.get("lesson") == lesson), None)
         if less:
-            les = next((les for les in less.get("student") if les.get("student_id") == stud.get("id")), None)
-            les.get("grade").append(grade)
+            les = next((les
+                        for les in less.get("student")
+                        if les.get("student_id") == stud.get("id")), None)
+            if les:
+                les.get("grade").append(grade)
+            else:
+                p = less.get("student")
+                p.append({"student_id": stud.get("id"), "grade": [grade]})
+                print(p)
 
 
 def find_grade_student(student: list, journal: list, last_name: str, first_name: str) -> tuple:
@@ -69,7 +76,10 @@ def find_grade_student(student: list, journal: list, last_name: str, first_name:
                     if les.get("student_id") == stud.get("id")), None)))
             for lesson in journal)
         for item in les:
-            result[item[0]] = item[1].get("grade")
+            if item[1]:
+                result[item[0]] = item[1].get("grade")
+            else:
+                result[item[0]] = []
     return last_name + " " + first_name, result
 
 
@@ -92,4 +102,11 @@ add_grade(student=students, journal=journals, last_name="Petrov", first_name="Iv
 add_grade(student=students, journal=journals, last_name="Petrov", first_name="Ivan", lesson="math", grade=4)
 add_grade(student=students, journal=journals, last_name="Petrov", first_name="Ivan", lesson="geography", grade=5)
 add_grade(student=students, journal=journals, last_name="Petrov", first_name="Ivan", lesson="geography", grade=4)
+my_grade = find_grade_student(student=students, journal=journals, last_name="Petrov", first_name="Ivan")
 print(f"student: {my_grade[0]}\ngrade: {my_grade[1]}")
+
+my_test = find_grade_student(student=students, journal=journals, last_name="Testing", first_name="Test")
+print(f"student: {my_test[0]}\ngrade: {my_test[1]}")
+add_grade(student=students, journal=journals, last_name="Testing", first_name="Test", lesson="math", grade=3)
+my_test = find_grade_student(student=students, journal=journals, last_name="Testing", first_name="Test")
+print(f"student: {my_test[0]}\ngrade: {my_test[1]}")
