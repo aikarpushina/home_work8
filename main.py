@@ -46,3 +46,14 @@ def find_student(student: list, last_name: str, first_name: str) -> dict:
                 and stud.get("first_name") == first_name), None)
     return stud
 
+
+def add_grade(student: list, journal: list, last_name: str, first_name: str, lesson: str, grade: int) -> None:
+    stud = find_student(student=student, last_name=last_name, first_name=first_name)
+    if stud:
+        less = next((less
+                     for less in journal
+                     if less.get("lesson") == lesson), None)
+        if less:
+            les = next((les for les in less.get("student") if les.get("student_id") == stud.get("id")), None)
+            les.get("grade").append(grade)
+
