@@ -58,7 +58,7 @@ def add_grade(student: list, journal: list, last_name: str, first_name: str, les
             les.get("grade").append(grade)
 
 
-def find_grade_student(student: list, journal: list, last_name: str, first_name: str) -> dict:
+def find_grade_student(student: list, journal: list, last_name: str, first_name: str) -> tuple:
     result = {}
     stud = find_student(student=student, last_name=last_name, first_name=first_name)
     if stud:
@@ -70,5 +70,26 @@ def find_grade_student(student: list, journal: list, last_name: str, first_name:
             for lesson in journal)
         for item in les:
             result[item[0]] = item[1].get("grade")
-    return result
+    return last_name + " " + first_name, result
 
+
+print(students)
+add_student(student=students, last_name="Testing", first_name="Test", klass="10b")
+print(students)
+print(find_student(student=students, last_name="qwe", first_name="rty"))
+
+print(journals)
+add_grade(student=students, journal=journals, last_name="Petrov", first_name="Ivan", lesson="math", grade=5)
+print(journals)
+
+print(find_student(student=students, last_name="Ivanov", first_name="Sergey"))
+
+my_grade = find_grade_student(student=students, journal=journals, last_name="Petrov", first_name="Ivan")
+
+print(f"student: {my_grade[0]}\ngrade: {my_grade[1]}")
+add_grade(student=students, journal=journals, last_name="Petrov", first_name="Ivan", lesson="math", grade=3)
+add_grade(student=students, journal=journals, last_name="Petrov", first_name="Ivan", lesson="math", grade=5)
+add_grade(student=students, journal=journals, last_name="Petrov", first_name="Ivan", lesson="math", grade=4)
+add_grade(student=students, journal=journals, last_name="Petrov", first_name="Ivan", lesson="geography", grade=5)
+add_grade(student=students, journal=journals, last_name="Petrov", first_name="Ivan", lesson="geography", grade=4)
+print(f"student: {my_grade[0]}\ngrade: {my_grade[1]}")
